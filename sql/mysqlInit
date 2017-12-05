@@ -1,0 +1,151 @@
+-- MySQL dump 10.13  Distrib 5.6.19, for osx10.7 (i386)
+--
+-- Host: 121.42.185.156    Database: qcr
+-- ------------------------------------------------------
+-- Server version	5.7.17
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE = @@TIME_ZONE */;
+/*!40103 SET TIME_ZONE = '+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
+/*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
+
+--
+-- Table structure for table `qcr_recruit`
+--
+
+DROP TABLE IF EXISTS `qcr_recruit`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `qcr_recruit` (
+`recruit_id`         INT(8)       NOT NULL AUTO_INCREMENT,
+`company`            VARCHAR(60)  NOT NULL,
+`job`                VARCHAR(120) NOT NULL,
+`type_id`            INT(8)       NOT NULL,
+`recruit_count`      INT(8)       NOT NULL,
+`salary`             VARCHAR(20)  NOT NULL,
+`work_place`         VARCHAR(60)  NOT NULL,
+`position_statement` TEXT         NOT NULL,
+`job_requirements`   TEXT         NOT NULL,
+`hits`               INT(8)       NOT NULL,
+`hot_flag`           INT(1)       NOT NULL,
+`verify_flag`        INT(1)       NOT NULL,
+`create_user`        INT(8)       NOT NULL,
+`update_user`        INT(8)       NOT NULL,
+`create_date`        DATETIME     NOT NULL,
+`update_date`        DATETIME     NOT NULL,
+`delete_flag`        INT(1)       NOT NULL DEFAULT '0',
+`publish_date`       VARCHAR(20)  NOT NULL,
+`telphone`           VARCHAR(50)  NOT NULL DEFAULT '1',
+`xueli`              VARCHAR(45)  NOT NULL DEFAULT '本科',
+PRIMARY KEY (`recruit_id`),
+KEY `rec_create_fk` (`create_user`),
+KEY `rec_update_fk` (`update_user`),
+KEY `type_fk` (`type_id`),
+CONSTRAINT `rec_create_fk` FOREIGN KEY (`create_user`) REFERENCES `qcr_user` (`user_id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE,
+CONSTRAINT `rec_update_fk` FOREIGN KEY (`update_user`) REFERENCES `qcr_user` (`user_id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE,
+CONSTRAINT `type_fk` FOREIGN KEY (`type_id`) REFERENCES `qcr_recruit_type` (`type_id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE
+)
+ENGINE = InnoDB
+AUTO_INCREMENT = 58
+DEFAULT CHARSET = utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `qcr_recruit_type`
+--
+
+DROP TABLE IF EXISTS `qcr_recruit_type`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `qcr_recruit_type` (
+`type_id`          INT(8)      NOT NULL AUTO_INCREMENT,
+`type_name`        VARCHAR(30) NOT NULL,
+`type_description` VARCHAR(120)         DEFAULT NULL,
+`sub_id`           INT(8)               DEFAULT NULL,
+`create_user`      INT(8)      NOT NULL,
+`update_user`      INT(8)      NOT NULL,
+`create_date`      DATETIME    NOT NULL,
+`update_date`      DATETIME    NOT NULL,
+`delete_flag`      INT(8)      NOT NULL DEFAULT '0',
+PRIMARY KEY (`type_id`),
+KEY `type_create_fk` (`create_user`),
+KEY `type_update_fk` (`update_user`),
+KEY `sub_fk` (`sub_id`),
+CONSTRAINT `sub_fk` FOREIGN KEY (`sub_id`) REFERENCES `qcr_recruit_type` (`type_id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE,
+CONSTRAINT `type_create_fk` FOREIGN KEY (`create_user`) REFERENCES `qcr_user` (`user_id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE,
+CONSTRAINT `type_update_fk` FOREIGN KEY (`update_user`) REFERENCES `qcr_user` (`user_id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE
+)
+ENGINE = InnoDB
+AUTO_INCREMENT = 29
+DEFAULT CHARSET = utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `qcr_user`
+--
+
+DROP TABLE IF EXISTS `qcr_user`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `qcr_user` (
+`user_id`         INT(8)      NOT NULL AUTO_INCREMENT,
+`user_name`       VARCHAR(60) NOT NULL,
+`password`        VARCHAR(32) NOT NULL,
+`mobile_phone`    VARCHAR(30) NOT NULL,
+`school`          VARCHAR(60)          DEFAULT NULL,
+`major`           VARCHAR(60)          DEFAULT NULL,
+`authority`       INT(1)      NOT NULL DEFAULT '0',
+`last_login_time` DATETIME             DEFAULT NULL,
+`last_login_ip`   VARCHAR(15)          DEFAULT NULL,
+`create_user`     INT(8)               DEFAULT NULL,
+`update_user`     INT(8)               DEFAULT NULL,
+`create_date`     DATETIME    NOT NULL,
+`update_date`     DATETIME    NOT NULL,
+`delete_flag`     INT(1)      NOT NULL DEFAULT '0',
+PRIMARY KEY (`user_id`),
+KEY `create_user_fk` (`create_user`),
+KEY `update_user_fk` (`update_user`),
+CONSTRAINT `create_user_fk` FOREIGN KEY (`create_user`) REFERENCES `qcr_user` (`user_id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE,
+CONSTRAINT `update_user_fk` FOREIGN KEY (`update_user`) REFERENCES `qcr_user` (`user_id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE
+)
+ENGINE = InnoDB
+AUTO_INCREMENT = 6
+DEFAULT CHARSET = utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping routines for database 'qcr'
+--
+/*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS = @OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-05-09 20:19:04

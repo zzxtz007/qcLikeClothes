@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>前程招聘</title>
+
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="bootstrap/bootstrap.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+
+</head>
+<body>
+<!-- header (navigator)-->
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header q-header">
+    	<button type="button" class="navbar-toggle collapsed" 
+    		data-toggle="modal" data-target="#searchModal" aria-expanded="false" 
+    		style="border: 0;background-color: #54c9c3;">
+        <span class="sr-only">筛选职位</span>
+        <span class="icon-bar" style="background-color: #fff;"></span>
+        <span class="icon-bar" style="background-color: #fff;"></span>
+        <span class="icon-bar" style="background-color: #fff;"></span>
+      	</button>
+      	<a class="navbar-brand" style="color: #fff;" href="#">前程似锦</a>
+    </div>
+  </div><!-- /.container-fluid -->
+</nav>
+<!--弹出层-->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+  <div class="modal-dialog" role="document" >
+    <div class="modal-content" style="border-radius: 0;">
+      <div class="modal-body" style="max-height: 300px; overflow-y: scroll;">
+      	<ul class="list-group line-group-grey" style="margin-bottom: 0;">
+			  <li class="list-group-item" style="border-top: 0;">计算机软件
+			  	<span data-toggle="collapse" href="#cate1" aria-expanded="false" aria-controls="cate1"><img src="images/down.png"/></span>
+				<div id="cate1" class="collapse">
+					<ul class="list-group noline-group" style=" margin-left: 10px;">
+						  <li class="list-group-item" style="margin-top: 0;">会计/财务管理</li>
+						  <li class="list-group-item">销售/市场营销</li>
+						  <li class="list-group-item">运营管理</li>
+						  <li class="list-group-item">工程建设/建筑管理</li>
+						  <li class="list-group-item">金融投资</li>
+					</ul>  	
+				</div>
+			  </li>
+			  <li class="list-group-item">会计/财务管理
+				<span data-toggle="collapse" href="#cate2" aria-expanded="false" aria-controls="cate2"><img src="images/down.png"/></span>
+				<div id="cate2" class="collapse">
+					<ul class="list-group noline-group" style=" margin-left: 10px;">
+						  <li class="list-group-item" style="margin-top: 0;">会计/财务管理</li>
+						  <li class="list-group-item">销售/市场营销</li>
+						  <li class="list-group-item">运营管理</li>
+					</ul>  	
+				</div>
+			  </li>
+			  <li class="list-group-item">销售/市场营销
+				<span data-toggle="collapse" href="#cate3" aria-expanded="false" aria-controls="cate3"><img src="images/down.png"/></span>
+				<div id="cate3" class="collapse">
+					<ul class="list-group noline-group" style=" margin-left: 10px;">
+						  <li class="list-group-item">金融投资</li>
+					</ul>  	
+				</div>
+			  </li>
+			  <li class="list-group-item">运营管理
+				<span data-toggle="collapse" href="#cate4" aria-expanded="false" aria-controls="cate4"><img src="images/down.png"/></span>
+				<div id="cate4" class="collapse">
+					<ul class="list-group noline-group" style=" margin-left: 10px;">
+						  <li class="list-group-item" style="margin-top: 0;">会计/财务管理</li>
+						  <li class="list-group-item">销售/市场营销</li>
+						  <li class="list-group-item">金融投资</li>
+					</ul>  	
+				</div>
+			  </li>
+			  <li class="list-group-item">工程建设/建筑管理
+				<span data-toggle="collapse" href="#cate5" aria-expanded="false" aria-controls="cate5"><img src="images/down.png"/></span>
+				<div id="cate5" class="collapse">
+					<ul class="list-group noline-group" style=" margin-left: 10px;">
+						  <li class="list-group-item" style="margin-top: 0;">会计/财务管理</li>
+						  <li class="list-group-item">销售/市场营销</li>
+					</ul>  	
+				</div>
+			  </li>
+		</ul>  	
+		<script type="text/javascript">
+			$(".collapse").each(function(){
+				$(this).on('hidden.bs.collapse', function () {
+					$switchImage = $(this).prev("span").find("img");
+					$switchImage.attr("src", "images/down.png");
+				});	
+				$(this).on('shown.bs.collapse', function () {
+					$switchImage = $(this).prev("span").find("img");
+					$switchImage.attr("src", "images/up.png");
+				});	
+			});
+		</script>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" style="background-color: #54c9c3; border: 1px solid #54c9c3; border-radius: 0;">确定</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" style="border: 1px solid #54c9c3; border-radius: 0;">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--banner-->
+<div>
+<img src="images/banner.png" style="width: 100%;" />
+</div>
+
+<!-- menu -->
+<!-- 
+<ul class="nav nav-tabs">
+  	<li role="presentation" class="active"><a href="#" style="font-size: 16px;">热门职位</a></li>
+	<li role="presentation"><a href="#" style="color: #54c9c3;font-size: 16px;">更多职位</a></li>
+</ul>
+
+<div class="row menu">
+  <div class="col-xs-6"><a href="#" style="color: #666666;">热门职位</a></div>
+  <div class="col-xs-6" style="background-color: #e9f2f2;"><a href="#" style="color: #54c9c3;">更多职位</a></div>
+</div>
+-->
+<ul class="nav nav-tabs menu" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">热门职位</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" >更多职位</a></li>
+</ul>
+
+<div class="tab-content">
+<!--tab1-->
+<div role="tabpanel" class="tab-pane active" id="home">
+	<!-- list1 -->
+	<div style="padding:10px 7px; background-color: #e9f2f2;">
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		  	<span class="signature"><img src="images/check-a.png"/></span>
+		    <p class="title">欧美项目高级产品经理 Sensior PM<span>25K~35k</span></p>
+		    <p>公司：北京深蓝科技</p>
+		    <p style="margin-bottom: 0;">
+		    	<span class="icon-addr"></span>工作地点：北京&nbsp;&nbsp;
+		    	<span class="icon-exp"></span>&nbsp;2-5年&nbsp;&nbsp;
+		    	<span class="icon-edu"></span>&nbsp;本科
+		    </p>
+		  </div>
+		  <div class="panel-footer" style="background-color: #fff;"><span class="icon-tel"></span>&nbsp;13838381111</div>
+		</div>
+
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		    <p class="title">高级软件开发工程师-对日外包方向 <span>25K~35k</span></p>
+		    <p>公司：北京深蓝科技</p>
+		    <p style="margin-bottom: 0;">
+		    	<span class="icon-addr"></span>工作地点：北京&nbsp;&nbsp;
+		    	<span class="icon-exp"></span>&nbsp;3-5年&nbsp;&nbsp;
+		    	<span class="icon-edu"></span>&nbsp;本科
+		    </p>
+		  </div>
+		  <div class="panel-footer" style="background-color: #fff;"><span class="icon-tel"></span>&nbsp;13838381111</div>
+		</div>
+
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		  	<span class="signature"><img src="images/check-a.png"/></span>
+		    <p class="title">初级单片机开发工程师-北京<span>15K以上</span></p>
+		    <p>公司：北京深蓝科技</p>
+		    <p style="margin-bottom: 0;">
+		    	<span class="icon-addr"></span>工作地点：北京&nbsp;&nbsp;
+		    	<span class="icon-exp"></span>&nbsp;1-2年&nbsp;&nbsp;
+		    	<span class="icon-edu"></span>&nbsp;本科
+		    </p>
+		  </div>
+		  <div class="panel-footer" style="background-color: #fff;"><span class="icon-tel"></span>&nbsp;13838381111</div>
+		</div>
+
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		    <p class="title">中高级软件开发经理<span>25K~35k</span></p>
+		    <p>公司：北京神舟泰岳软件科技</p>
+		    <p style="margin-bottom: 0;">
+		    	<span class="icon-addr"></span>工作地点：北京&nbsp;&nbsp;
+		    	<span class="icon-exp"></span>&nbsp;3-5年&nbsp;&nbsp;
+		    	<span class="icon-edu"></span>&nbsp;本科
+		    </p>
+		  </div>
+		  <div class="panel-footer" style="background-color: #fff;"><span class="icon-tel"></span>&nbsp;13838381111</div>
+		</div>
+	</div>
+</div>
+
+<!--tab2-->
+<div role="tabpanel" class="tab-pane" id="profile">
+	<!-- list2 -->
+	<div style="padding:10px 7px; background-color: #e9f2f2;">
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		  	<span class="signature"><img src="images/check-a.png"/></span>
+		    <p class="title">欧美项目高级产品经理 Sensior PM<span>25K~35k</span></p>
+		    <p>公司：北京深蓝科技</p>
+		    <p style="margin-bottom: 0;">
+		    	<span class="icon-addr"></span>工作地点：北京&nbsp;&nbsp;
+		    	<span class="icon-exp"></span>&nbsp;2-5年&nbsp;&nbsp;
+		    	<span class="icon-edu"></span>&nbsp;本科
+		    </p>
+		  </div>
+		  <div class="panel-footer" style="background-color: #fff;"><span class="icon-tel"></span>&nbsp;13838381111</div>
+		</div>
+
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		    <p class="title">高级软件开发工程师-对日外包方向 <span>25K~35k</span></p>
+		    <p>公司：北京深蓝科技</p>
+		    <p style="margin-bottom: 0;">
+		    	<span class="icon-addr"></span>工作地点：北京&nbsp;&nbsp;
+		    	<span class="icon-exp"></span>&nbsp;3-5年&nbsp;&nbsp;
+		    	<span class="icon-edu"></span>&nbsp;本科
+		    </p>
+		  </div>
+		  <div class="panel-footer" style="background-color: #fff;"><span class="icon-tel"></span>&nbsp;13838381111</div>
+		</div>
+</div>
+
+</div>
+
+<!--copyright-->
+<div class="copyright">
+	大通科技 0411-39558235<br>hr@qian.com &copy; all rights reserved.
+</div>
+</body>
+</html>

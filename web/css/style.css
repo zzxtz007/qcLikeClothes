@@ -1,0 +1,217 @@
+html, body, * {     
+	font-family: "Microsoft YaHei" ! important; 
+}
+.q-header{
+	background: #54c9c3;
+	text-align: center;
+	position: relative;
+}
+
+.navbar-back{
+	display: inline-block;
+	height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+    color: #ffffff;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.q-header i{
+	display: inline-block;
+	height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+    color: #ffffff;
+    font-style: normal;
+}
+
+.icon-tel{
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background: url('../images/tel.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	background-size: 14px 14px;
+}
+
+.icon-addr{
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background: url('../images/addr.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	background-size: contain;
+}
+
+.icon-edu{
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background: url('../images/edu.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	background-size: 16px 16px;
+}
+
+.icon-exp{
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background: url('../images/exp.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	background-size: 14px 14px;
+}
+
+.panel{
+	margin-bottom: 5px;
+	border: 0;
+	border-radius: 0px;
+}
+
+.signature{
+	display: inline-block;
+	width: 35%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 99;
+}
+
+.signature-b{
+	display: inline-block;
+	width: 25%;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 99;
+}
+
+.signature img{
+	width: 100%;
+}
+
+.signature-b img{
+	width: 100%;
+}
+
+.panel-body{
+	position: relative;
+}
+
+.panel-footer{
+	margin-top: -10px;
+	border-top: 0;
+}
+
+.title{
+	font-size: 15px;
+	position: relative;
+}
+
+.title-b{
+	color: #54c9c3;
+	font-size: 16px;
+}
+
+.title span{
+	display: inline-block;
+	position: absolute;
+	right: 0;
+	top: 0;
+	color: #ff0000;
+}
+
+.copyright{
+	padding-top: 10px;
+	text-align: center;
+	color: #999999;
+	font-size: -1;
+	padding:10px 7px; 
+	background-color: #e9f2f2;
+}
+
+.list-group{
+	border: 0;
+	width: 100%;
+}
+
+.list-group-item{
+	border: 0;
+	padding: 10px 2px;
+	position: relative;
+}
+
+.line-group .list-group-item{
+	border-top: 1px solid #54c9c3;
+}
+
+.line-group-grey .list-group-item{
+	border-top: 1px solid #e5e5e5;
+}
+
+.noline-group .list-group-item{
+	border-top: 0;
+}
+
+.list-group-item span{
+	display: inline-block;
+	position: absolute;
+	right: 0;
+	top: 10px;
+	color: #ff0000;
+}
+
+.modal{
+	top: 50px;
+}
+
+.menu .col-xs-6{
+	line-height: 50px;
+	text-align: center;
+	font-size: 16px;
+}
+
+.menu li{
+	width: 50%;
+	line-height: 50px;
+	text-align: center;
+	font-size: 16px;
+	background-color: #e9f2f2;
+	
+}
+
+.menu li a{
+	color: #54c9c3;
+}
+
+.menu li.active a{
+	border: 0;
+	border-bottom-color: 0;
+	background-color: #ffffff;
+	
+}
+
+.menu li.active{
+	background-color: #ffffff;
+}
+
+.menu li.active a:hover{
+	border: 0;
+	border-bottom-color: 0;
+}
+
+.nav-tabs{
+	border: 0;
+}
+
+.nav-tabs li{
+	border-bottom: 0;
+
+}
