@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>管理后台</title>
+</head>
+<style type="text/css">
+	* {
+		margin: 0px;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	#Main {
+		margin: 100px auto auto auto;
+		width: 500px;
+		height: 400px;
+	}
+
+	body > div > div {
+		width: 500px;
+	}
+
+	.bigbutton {
+		float: left;
+		width: 200px;
+		height: 100px;
+		background-color: dodgerblue;
+		transition: all 400ms ease;
+		color: white;
+		font-size: 20px;
+		text-align: center;
+		line-height: 100px;
+		cursor: pointer;
+		z-index: 1;
+	}
+
+	.bigbutton:hover {
+		box-shadow: black -3px -3px 5px;
+		background-color: deeppink;
+
+	}
+</style>
+<body>
+<div id="Main">
+	<div>
+		<div class="bigbutton" onclick="manageType()">招聘职位分类管理</div>
+		<div class="bigbutton" onclick="manageMessage()">招聘信息管理</div>
+	</div>
+	<div>
+		<div class="bigbutton">暂未开放</div>
+		<div class="bigbutton">暂未开放</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="/js/jquery3.1.js"></script>
+<script type="text/javascript">
+	function manageType() {
+		location.href='manageType.html';
+    }
+	function manageMessage() {
+		location.href='manageMessage.html';
+    }
+</script>
+</html>
