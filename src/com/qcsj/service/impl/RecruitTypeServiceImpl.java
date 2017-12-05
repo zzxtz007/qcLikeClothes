@@ -9,6 +9,7 @@ import com.qcsj.service.ServiceUtil.SuperInfo;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecruitTypeServiceImpl implements RecruitTypeService {
 	@Override
@@ -31,7 +32,7 @@ public class RecruitTypeServiceImpl implements RecruitTypeService {
 			return si;
 		}
 		try {
-			ArrayList<RecruitType> list = DaoFactory.getRecruitTypeDao().getRecruitTypeByPage(size, num);
+			List<RecruitType> list = DaoFactory.getRecruitTypeDao().getRecruitTypeByPage(size, num);
 			si.setLists(list);
 			// 查询所有type
 			si.setRet(0);

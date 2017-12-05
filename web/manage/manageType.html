@@ -106,6 +106,9 @@
 		color: #ffffff;
 	}
 
+	#update {
+
+	}
 
 </style>
 <body>
@@ -217,8 +220,8 @@
             default:
                 pageNum = parseInt(btn.innerText);
         }
-        alert("pagesize="+pagesize);
-        alert("pageNum="+pageNum);
+        alert("pagesize=" + pagesize);
+        alert("pageNum=" + pageNum);
         $.ajax({
             url: "/ShowManageType",
             type: "get",
@@ -234,12 +237,16 @@
                     table.text = '';
                 }
                 for (var type of t) {
-                    var tr = $("<tr id='"+type.id+"'></tr>");
-                    var td = $("<td>"+type.name+"</td>");
+                    var tr = $("<tr id='" + type.id + "'></tr>");
+                    var td = $("<td>" + type.name + "</td>");
                     tr.append(td);
-                    td = $("<td>"+type.description+"</td>");
+                    td = $("<td>" + type.description + "</td>");
                     tr.append(td);
-                    td = $("<td>"+type.supName+"</td>");
+                    td = $("<td>" + type.supName + "</td>");
+                    tr.append(td);
+                    td = $("<td><button class='updateButton' onclick='updateType(this)'></button></td>");
+                    tr.append(td);
+                    td = $("<td><button class='deleteButton' onclick='deleteType(this)'></button></td>");
                     tr.append(td);
                     table.append(tr);
                 }
@@ -247,6 +254,33 @@
             .fail(function () {
                 alert('发生了未知错误，请稍后再试');
             })
+    }
+
+    var updateFlag = false;
+    var deleteFlag = false;
+
+    function updateType(button) {
+        updateFlag = !updateFlag;
+        if (updateFlag) {
+            var id = button.parentNode.parentNode.id;
+            var div = $("<div id='update'></div>");
+            var form = $("<form id = '" + id + "'></form>");
+            var text1 = $("<input type='text' name='name' value='" + button.parentNode.parentNode.childNodes[0].innerText + "'>");
+            var text2 = $("<input type='text' name='description' value='" + button.parentNode.parentNode.childNodes[1].innerText + "'>");
+            var text3 = $("<input type='text' name='supName' value='" + button.parentNode.parentNode.childNodes[2].innerText + "'>");
+            $("body").append(div);
+            div.append(form);
+            form.append(text1);
+            form.append(text2);
+            form.append(text3);
+        }
+    }
+
+    function deleteType(button) {
+        deleteFlag = !deleteFlag;
+        if (deleteFlag) {
+
+        }
     }
 
 

@@ -7,6 +7,7 @@ import com.qcsj.entity.RecruitType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecruitTypeDaoImpl implements RecruitTypeDao {
 
@@ -24,8 +25,8 @@ public class RecruitTypeDaoImpl implements RecruitTypeDao {
 	 * @param deleteFlag             已删除
 	 * @return 拼接后的查询语句
 	 */
-	private String combineQuerySql(boolean recruitTypeId, boolean recruitTypeName, boolean recruitTypeDescription, boolean supId,
-	                               boolean deleteFlag) {
+	private String combineQuerySql(boolean recruitTypeId, boolean recruitTypeName, boolean recruitTypeDescription, boolean supId
+	) {
 		return "SELECT " +
 				"  t1.`type_id`,\n" +
 				"  t1.`type_name`,\n" +
@@ -39,13 +40,13 @@ public class RecruitTypeDaoImpl implements RecruitTypeDao {
 				(recruitTypeName ? " AND t1.`type_name` like ?" : "") +
 				(recruitTypeDescription ? " AND t1.`type_description` LIKE ?" : "") +
 				(supId ? " AND t1.`sup_id` LIKE ?" : "") +
-				(deleteFlag ? " AND t1.`delete_flag` = ?" : "") +
+				" AND t1.`delete_flag` = 0 AND t2.`delete_flag` = 0" +
 				" ORDER BY t1.`type_id` DESC, t1.`update_date` DESC LIMIT ?, ?";
 	}
 
 	@Override
-	public ArrayList<RecruitType> getRecruitTypeByPage(Integer pageSize, Integer pageNum) throws SQLException {
-		String sql = combineQuerySql(false, false, false, false, false);
+	public List<RecruitType> getRecruitTypeByPage(Integer pageSize, Integer pageNum) throws SQLException {
+		String sql = combineQuerySql(false, false, false, false);
 		ArrayList p = new ArrayList();
 		p.add((pageNum - 1) * pageSize);
 		p.add(pageNum * pageSize);
@@ -54,7 +55,71 @@ public class RecruitTypeDaoImpl implements RecruitTypeDao {
 			return null;
 		}
 		ResultSet rs = (ResultSet) o;
-		ArrayList<RecruitType> a = new ArrayList<>();
+		List<RecruitType> a = generateModelArr(rs);
+		MySqlJDBC.clossConnection();
+		return a;
+	}
+
+	@Override
+	public Integer getRecruitTypePageNum(Integer pageSize) throws SQLException {
+		//language=MySQL
+		String sql = "SELECT count(`type_id`)\n" +
+				"FROM `qcr_recruit_type`";
+		Object o = MySqlJDBC.execute(sql, 2);
+		if (o == null) {
+			return null;
+		}
+		ResultSet rs = (ResultSet) o;
+		Integer a = null;
+		if (rs.next()) {
+			a = rs.getInt(1);
+		}
+		MySqlJDBC.clossConnection();
+		return a % pageSize == 0 ? a / pageSize : a / pageSize + 1;
+	}
+
+	@Override
+	public Integer insertRecruitType(String name, String desciption, Integer supId, Integer uid, Integer typeId) throws SQLException {
+		//language=MySQL
+		String sql = "UPDATE qcr_recruit_type\n" +
+				"SET type_name = ?,type_description = ?,sub_id = ?,update_user = ? ,update_date = now() WHERE type_id = ?";
+		ArrayList p = new ArrayList();
+		p.add(name);
+		p.add(desciption);
+		p.add(supId);
+		p.add(uid);
+		p.add(typeId);
+		Object o = MySqlJDBC.execute(sql, p, 1);
+		if (o == null) {
+			return null;
+		}
+		return o.hashCode();
+	}
+
+	@Override
+	public List<RecruitType> getRecruitTypeFathers() throws SQLException {
+		//language=MySQL
+		String sql = "SELECT\n" +
+				"  type_id,\n" +
+				"  type_name,\n" +
+				"  type_description,\n" +
+				"  sub_id,\n" +
+				"  type_name\n" +
+				"FROM qcr_recruit_type\n" +
+				"WHERE type_id = qcr_recruit_type.sub_id AND delete_flag=0";
+		Object o = MySqlJDBC.execute(sql, MySqlJDBC.SELECT);
+		if (o == null) {
+			return null;
+		}
+		ResultSet rs = (ResultSet) o;
+		List<RecruitType> a = generateModelArr(rs);
+
+		MySqlJDBC.clossConnection();
+		return a;
+	}
+
+	private List<RecruitType> generateModelArr(ResultSet rs) throws SQLException {
+		List<RecruitType> list = new ArrayList();
 		while (rs.next()) {
 			RecruitType rt = new RecruitType();
 			rt.setId(rs.getInt(1));
@@ -62,27 +127,9 @@ public class RecruitTypeDaoImpl implements RecruitTypeDao {
 			rt.setDescription(rs.getString(3));
 			rt.setSupId(rs.getInt(4));
 			rt.setSupName(rs.getString(5));
-			a.add(rt);
+			list.add(rt);
 		}
-		MySqlJDBC.clossConnection();
-		return a;
-	}
-
-	@Override
-	public Integer getRecruitTypePageNum(Integer pageSize) throws SQLException{
-		//language=MySQL
-		String sql = "SELECT count(`type_id`)\n" +
-				"FROM `qcr_recruit_type`";
-		Object o = MySqlJDBC.execute(sql,2);
-		if (o==null){
-			return null;
-		}
-		ResultSet rs = (ResultSet) o;
-		Integer a =null;
-		if (rs.next()){
-			a= rs.getInt(1);
-		}
-		MySqlJDBC.clossConnection();
-		return a%pageSize==0?a/pageSize:a/pageSize+1;
+		int len = list.size();
+		return len == 0 ? null : list;
 	}
 }

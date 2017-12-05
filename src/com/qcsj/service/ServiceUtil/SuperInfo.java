@@ -1,6 +1,6 @@
 package com.qcsj.service.ServiceUtil;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,7 +19,7 @@ public class SuperInfo {
 	 * 1 null
 	 */
 	private int ret = 0;
-	private ArrayList lists;
+	private List lists;
 	private Set set;
 	private Map map;
 	private Object o;
@@ -69,11 +69,11 @@ public class SuperInfo {
 	}
 
 
-	public ArrayList getLists() {
+	public List getLists() {
 		return lists;
 	}
 
-	public void setLists(ArrayList lists) {
+	public void setLists(List lists) {
 		this.lists = lists;
 	}
 
