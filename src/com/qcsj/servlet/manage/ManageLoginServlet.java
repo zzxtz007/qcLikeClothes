@@ -1,4 +1,4 @@
-package com.qcsj.servlet;
+package com.qcsj.servlet.manage;
 
 import com.qcsj.entity.User;
 import com.qcsj.service.ServiceFactory;

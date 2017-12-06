@@ -107,9 +107,23 @@
 	}
 
 	#update {
-
+		width: 800px;
+		height: 200px;
+		background-color: #cbe1dd;
 	}
 
+	#update form {
+		width: 300px;
+	}
+
+	.close {
+		display: none;
+	}
+
+	.open {
+		width: 500px;
+		height: 400px;
+	}
 </style>
 <body>
 <div id="Main">
@@ -123,22 +137,30 @@
 		<div id="controlBottom"></div>
 	</div>
 </div>
+<div id="controlMeun" class="close">
+	<span></span>
+	<form>
+		职位名称：<input type="text" name="name"><br><br>
+		职位描述：<input type="text" name="description"><br><br>
+		上级信息：<select></select><br><br>
+		<button type="button">提交</button>&nbsp;&nbsp;&nbsp;
+		<button onclick="cancel()" type="button">取消</button>
+	</form>
+</div>
 </body>
 <script src="/js/jquery3.1.js"></script>
 <script>
-    var totalPage = 0;
+    var totalPage = 1;
     var pageNum = 1;
     var pagesize = 5;
     $(function () {
         initPage();
-
+        gotoPage(pageNum);
     });
 
     function initPage() {
-        var tableDiv = $("#table");
-        var table = tableDiv.find("table");
         $.ajax({
-            url: '/GetTotalRecruitPage',
+            url: '/GetTotalRecruitTypePage',
             type: 'post'
         })
             .done(function (t) {
@@ -187,6 +209,11 @@
             pageChange(this);
         });
         controlBottom.append(button);
+        button = $("<button>添加</button>");
+        button.on('click', function () {
+            insertType();
+        });
+        controlBottom.append(button);
     }
 
     function pageChange(btn) {
@@ -207,7 +234,9 @@
                 }
                 break;
             case '尾页':
-                pageNum = parseInt(totalPage);
+                if (totalPage != null) {
+                    pageNum = parseInt(totalPage);
+                }
                 break;
             case '查询':
                 var text = $("#num");
@@ -220,22 +249,30 @@
             default:
                 pageNum = parseInt(btn.innerText);
         }
-        alert("pagesize=" + pagesize);
-        alert("pageNum=" + pageNum);
+//        alert("pagesize=" + pagesize);
+//        alert("pageNum=" + pageNum);
+        gotoPage(pageNum);
+
+    }
+
+    function gotoPage(num) {
         $.ajax({
             url: "/ShowManageType",
             type: "get",
             data: {
                 "pagesize": pagesize,
-                "pagenum": pageNum
+                "pagenum": num
             }
         })
             .done(function (t) {
+//                alert(t);
                 var tablediv = $("#table");
                 var table = tablediv.find("table");
                 if (table !== null) {
-                    table.text = '';
+                    table.remove();
                 }
+                table = $("<table id='showRecruitType'></table>");
+                tablediv.prepend(table);
                 for (var type of t) {
                     var tr = $("<tr id='" + type.id + "'></tr>");
                     var td = $("<td>" + type.name + "</td>");
@@ -256,33 +293,157 @@
             })
     }
 
-    var updateFlag = false;
-    var deleteFlag = false;
+    var controlMeunStatus = false;
+
+    function insertType() {
+        controlMeunStatus = !controlMeunStatus;
+        var div = $("#controlMeun");
+        div[0].className = "open";
+        var select = div.find("select");
+        var submit = div.find("button").eq(0);
+        submit.on('click', function () {
+            insertSubmit(this);
+        });
+        div.find("input[name=name]")[0].value = '';
+        div.find("input[name=description]")[0].value = '';
+        //调用ajax查询外键
+        $.ajax({
+            url: "/GetAllFathersType",
+            type: "post"
+        })
+            .done(function (t) {
+                for (type of t) {
+                    var option = $("<option value='" + type.id + "'>" + type.name + "</option>");
+                    select.append(option);
+                }
+            })
+            .fail(function () {
+                alert('发生了未知错误，请稍后再试');
+                cancel();
+            });
+    }
 
     function updateType(button) {
-        updateFlag = !updateFlag;
-        if (updateFlag) {
-            var id = button.parentNode.parentNode.id;
-            var div = $("<div id='update'></div>");
-            var form = $("<form id = '" + id + "'></form>");
-            var text1 = $("<input type='text' name='name' value='" + button.parentNode.parentNode.childNodes[0].innerText + "'>");
-            var text2 = $("<input type='text' name='description' value='" + button.parentNode.parentNode.childNodes[1].innerText + "'>");
-            var text3 = $("<input type='text' name='supName' value='" + button.parentNode.parentNode.childNodes[2].innerText + "'>");
-            $("body").append(div);
-            div.append(form);
-            form.append(text1);
-            form.append(text2);
-            form.append(text3);
-        }
+        var div = $("#controlMeun");
+        div[0].className = "open";
+        var id = button.parentNode.parentNode.id;
+        var name = button.parentNode.parentNode.childNodes[0].innerText;
+        var description = button.parentNode.parentNode.childNodes[1].innerText;
+        div.find("form")[0].id = id;
+        div.find("input[name=name]")[0].value = name;
+        div.find("input[name=description]")[0].value = description;
+        var select = div.find("select");
+        var submit = div.find("button").eq(0);
+        submit.on('click', function () {
+            updateSubmit(this);
+        });
+        //调用ajax查询外键
+        $.ajax({
+            url: "/GetAllFathersType",
+            type: "post"
+        })
+            .done(function (t) {
+                select.html('');
+                for (type of t) {
+                    var option = $("<option value='" + type.id + "'>" + type.name + "</option>");
+                    select.append(option);
+                }
+                var option = $("<option value='" + id + "'>" + name + "</option>");
+                select.append(option);
+            })
+            .fail(function () {
+                alert('发生了未知错误，请稍后再试');
+                cancel();
+            });
+    }
+
+    function insertSubmit(btn) {
+        console.log(btn);
+        var id = btn.parentNode.id;
+        var name = btn.parentNode.childNodes[1].value;
+        var description = btn.parentNode.childNodes[5].value;
+        var supId = btn.parentNode.childNodes[9].value;
+        $.ajax({
+            url: "/AddType",
+            type: "get",
+            data: {
+                "id": id,
+                "name": name,
+                "description": description,
+                "supId": supId
+            }
+        })
+            .done(function (t) {
+                if (t === "true") {
+                    alert("添加成功！");
+                } else {
+                    alert("添加失败！");
+                }
+                gotoPage(pageNum);
+            })
+            .fail(function () {
+                alert('发生了未知错误，请稍后再试');
+                cancel();
+            })
+    }
+
+    function updateSubmit(btn) {
+        console.log(btn);
+        var id = btn.parentNode.id;
+        var name = btn.parentNode.childNodes[1].value;
+        var description = btn.parentNode.childNodes[5].value;
+        var supId = btn.parentNode.childNodes[9].value;
+        $.ajax({
+            url: "/UpdateType",
+            type: "get",
+            data: {
+                "id": id,
+                "name": name,
+                "description": description,
+                "supId": supId
+            }
+        })
+            .done(function (t) {
+                if (t === "true") {
+                    alert("修改成功！");
+                } else {
+                    alert("修改失败！");
+                }
+                gotoPage(pageNum);
+            })
+            .fail(function () {
+                alert('发生了未知错误，请稍后再试');
+                cancel();
+            })
     }
 
     function deleteType(button) {
-        deleteFlag = !deleteFlag;
-        if (deleteFlag) {
-
+        var str = "";
+        var id = button.parentNode.parentNode.id;
+        str += button.parentNode.parentNode.childNodes[0].innerText + "  ";
+        str += button.parentNode.parentNode.childNodes[1].innerText + "  ";
+        str += button.parentNode.parentNode.childNodes[2].innerText + "  ";
+        if (confirm("确定要删除如下值么\n" + str)) {
+            $.ajax({
+                url: "/DeleteType",
+                type: "get",
+                data: {"id":id}
+            }).done(function (t) {
+                if (t === "true") {
+                    alert("修改成功！");
+                } else {
+                    alert("修改失败！");
+                }
+                gotoPage(pageNum);
+            }).fail(function () {
+                alert('发生了未知错误，请稍后再试');
+            })
         }
     }
 
-
+    function cancel() {
+        var div = $("#controlMeun");
+        div[0].className = "close";
+    }
 </script>
 </html>

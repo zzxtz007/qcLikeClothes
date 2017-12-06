@@ -62,26 +62,23 @@ DROP TABLE IF EXISTS `qcr_recruit`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `qcr_recruit` (
-`recruit_id` INT (8) NOT NULL AUTO_INCREMENT,
-`company` VARCHAR (60) NOT NULL,
-` JOB ` VARCHAR (120) NOT NULL,
-`type_id` INT (8) NOT NULL,
-`recruit_count` INT (8) NOT NULL,
-`salary` VARCHAR (20) NOT NULL,
-`work_place` VARCHAR (60) NOT NULL,
-`position_statement` TEXT NOT NULL,
-`job_requirements` TEXT NOT NULL,
-`hits` INT (8) NOT NULL,
-`hot_flag` INT (1) NOT NULL,
-`verify_flag` INT (1) NOT NULL,
-`create_user` INT (8) NOT NULL,
-`update_user` INT (8) NOT NULL,
-`create_date`        DATETIME NOT NULL,
-`update_date`        DATETIME NOT NULL,
-`delete_flag` INT (1) NOT NULL DEFAULT '0',
-`publish_date` VARCHAR (20) NOT NULL,
-`telphone` VARCHAR (50) NOT NULL DEFAULT '1',
-`xueli` VARCHAR (45) NOT NULL DEFAULT '本科',
+`recruit_id`         INT(8)       NOT NULL AUTO_INCREMENT,
+`company`            VARCHAR(60)  NOT NULL,
+`JOB`                VARCHAR(120) NOT NULL,
+`type_id`            INT(8)       NOT NULL,
+`recruit_count`      INT(8)       NOT NULL,
+`salary`             VARCHAR(20)  NOT NULL,
+`work_place`         VARCHAR(60)  NOT NULL,
+`position_statement` TEXT         NOT NULL,
+`job_requirements`   TEXT         NOT NULL,
+`hits`               INT(8)       NOT NULL DEFAULT 0,
+`hot_flag`           INT(1)       NOT NULL DEFAULT 0,
+`verify_flag`        INT(1)       NOT NULL DEFAULT 0,
+`create_user`        INT(8)       NOT NULL,
+`update_user`        INT(8)       NOT NULL,
+`create_date`        DATETIME     NOT NULL,
+`update_date`        DATETIME     NOT NULL,
+`delete_flag`        INT(1)       NOT NULL DEFAULT 0,
 PRIMARY KEY (`recruit_id`),
 KEY `rec_create_fk` (`create_user`),
 KEY `rec_update_fk` (`update_user`),
@@ -97,7 +94,7 @@ ON DELETE CASCADE
 ON UPDATE CASCADE
 )
 ENGINE = InnoDB
-AUTO_INCREMENT = 58
+AUTO_INCREMENT = 5
 DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

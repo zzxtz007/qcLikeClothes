@@ -19,6 +19,10 @@ public class Recruit {
 	 * 类型ID
 	 */
 	private int typeId;
+	/**
+	 * 类型名称
+	 */
+	private String typeName;
 
 	/**
 	 * 招聘人数
@@ -28,7 +32,7 @@ public class Recruit {
 	/**
 	 * 工资
 	 */
-	private int salary;
+	private String salary;
 
 	/**
 	 * 工作地点
@@ -85,6 +89,14 @@ public class Recruit {
 	public Recruit() {
 	}
 
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -125,11 +137,11 @@ public class Recruit {
 		this.recruitCount = recruitCount;
 	}
 
-	public int getSalary() {
+	public String getSalary() {
 		return salary;
 	}
 
-	public void setSalary(int salary) {
+	public void setSalary(String salary) {
 		this.salary = salary;
 	}
 
