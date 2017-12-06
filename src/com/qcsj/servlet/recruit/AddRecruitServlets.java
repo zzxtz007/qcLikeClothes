@@ -32,6 +32,9 @@ public class AddRecruitServlets extends HttpServlet {
 		String workPlace = request.getParameter("workPlace");
 		String positionStatement = request.getParameter("positionStatement");
 		String jobRequirements = request.getParameter("jobRequirements");
+		String hits = request.getParameter("hits");
+		String hotFlag = request.getParameter("hotFlag");
+		String verifyFlag = request.getParameter("verifyFlag");
 		SuperInfo si = ServiceFactory.getRecruitService().insertRecruit(company, job,typeId, recruitCount, salary, workPlace, positionStatement, jobRequirements, request.getSession());
 		System.out.println("AddRecruitServlets----" + si.getRet());
 		switch (si.getRet()) {

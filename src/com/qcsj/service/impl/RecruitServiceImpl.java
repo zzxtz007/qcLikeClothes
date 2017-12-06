@@ -179,11 +179,11 @@ public class RecruitServiceImpl implements RecruitService {
 	}
 
 	@Override
-	public SuperInfo updateRecruitById(String company, String job, String typeId, String recruitCount, String salary, String workPlace, String positionStatement, String jobRequirements, HttpSession session, String recruitId) {
+	public SuperInfo updateRecruitById(String company, String job, String typeId, String recruitCount, String salary, String workPlace, String positionStatement, String jobRequirements, String hits, String hotFlag, String verifyFlag, HttpSession session, String recruitId) {
 		SuperInfo si = new SuperInfo();
 		// 参数不完整时返回 6
 		if (company == null || job == null || typeId == null || recruitCount == null || salary ==
-				null || workPlace == null || positionStatement == null || jobRequirements == null) {
+				null || workPlace == null || positionStatement == null || jobRequirements == null || hits == null || hotFlag == null || verifyFlag == null) {
 			si.setRet(6);
 			return si;
 		}
@@ -196,18 +196,30 @@ public class RecruitServiceImpl implements RecruitService {
 		Integer typeid = 0;
 		Integer recruitcount = 0;
 		Integer uid = 0;
+		Integer hitss = 0;
+		Integer hotflag = 0;
+		Integer verifyflag = 0;
 		// 类型转换异常 5
 		try {
 			typeid = Integer.parseInt(typeId);
+			System.out.println("typeId"+typeid);
 			uid = Integer.parseInt(session.getAttribute("uid").toString());
 			recruitid = Integer.parseInt(recruitId);
+			System.out.println("recruitid"+recruitid);
 			recruitcount = Integer.parseInt(recruitCount);
+			System.out.println("recruitcount"+recruitcount);
+			hitss = Integer.parseInt(hits);
+			System.out.println("hitss"+hitss);
+			hotflag = Integer.parseInt(hotFlag);
+			System.out.println("hotflag"+hotflag);
+			verifyflag = Integer.parseInt(verifyFlag);
+			System.out.println("verifyflag"+verifyflag);
 		} catch (Exception e) {
 			si.setRet(5);
 			return si;
 		}
 		try {
-			Integer ret = DaoFactory.getRecruitDao().updateRecruit(company, job, typeid, recruitcount, salary, workPlace, positionStatement, jobRequirements, uid, recruitid);
+			Integer ret = DaoFactory.getRecruitDao().updateRecruit(company, job, typeid, recruitcount, salary, workPlace, positionStatement, jobRequirements, hitss, hotflag, verifyflag, uid, recruitid);
 
 			if (ret == null) {
 				// 查询到的返回值为空

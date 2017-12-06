@@ -31,6 +31,7 @@ public class QueryRecruitServlet extends HttpServlet {
 			case 0:
 				Gson g = new Gson();
 				String jsonStr = g.toJson(si.getLists());
+				System.out.println(jsonStr);
 				response.getWriter().print(jsonStr);
 				break;
 			case 1:

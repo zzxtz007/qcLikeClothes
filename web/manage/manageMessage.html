@@ -123,6 +123,9 @@
 	.open {
 		width: 500px;
 		height: 400px;
+		position: absolute;
+		top: 0px;
+		left: 0px;
 	}
 </style>
 <body>
@@ -140,9 +143,17 @@
 <div id="controlMeun" class="close">
 	<span></span>
 	<form>
-		职位名称：<input type="text" name="name"><br><br>
-		职位描述：<input type="text" name="description"><br><br>
-		上级信息：<select></select><br><br>
+		公司：<input type="text" name="company"><br><br>
+		职位名称：<input type="text" name="job"><br><br>
+		类型名称：<select></select><br><br>
+		招聘人数：<input type="text" name="recruitCount"><br><br>
+		薪资待遇：<input type="text" name="salary"><br><br>
+		工作地点：<input type="text" name="workPlace"><br><br>
+		岗位职责：<input type="text" name="positionStatement"><br><br>
+		任职要求：<input type="text" name="jobRequirements"><br><br>
+		点击数：<input type="text" name="hits"><br><br>
+		热度标记：<input type="text" name="hotFlag"><br><br>
+		验证标记：<input type="text" name="verifyFlag"><br><br>
 		<button type="button">提交</button>&nbsp;&nbsp;&nbsp;
 		<button onclick="cancel()" type="button">取消</button>
 	</form>
@@ -234,7 +245,7 @@
                 }
                 break;
             case '尾页':
-                if (totalPage != null) {
+                if (totalPage !== null) {
                     pageNum = parseInt(totalPage);
                 }
                 break;
@@ -257,7 +268,7 @@
 
     function gotoPage(num) {
         $.ajax({
-            url: "/ShowManageType",
+            url: "/QueryRecruit",
             type: "get",
             data: {
                 "pagesize": pagesize,
@@ -275,11 +286,27 @@
                 tablediv.prepend(table);
                 for (var type of t) {
                     var tr = $("<tr id='" + type.id + "'></tr>");
-                    var td = $("<td>" + type.name + "</td>");
+                    var td = $("<td>" + type.company + "</td>");
                     tr.append(td);
-                    td = $("<td>" + type.description + "</td>");
+                    td = $("<td>" + type.job + "</td>");
                     tr.append(td);
-                    td = $("<td>" + type.supName + "</td>");
+                    td = $("<td id='" + type.typeId + "'>" + type.typeName + "</td>");
+                    tr.append(td);
+                    td = $("<td>" + type.recruitCount + "</td>");
+                    tr.append(td);
+                    td = $("<td>" + type.salary + "</td>");
+                    tr.append(td);
+                    td = $("<td>" + type.workPlace + "</td>");
+                    tr.append(td);
+                    td = $("<td>" + type.positionStatement + "</td>");
+                    tr.append(td);
+                    td = $("<td>" + type.jobRequirements + "</td>");
+                    tr.append(td);
+                    td = $("<td>" + type.hits + "</td>");
+                    tr.append(td);
+                    td = $("<td>" + type.hotFlag + "</td>");
+                    tr.append(td);
+                    td = $("<td>" + type.verifyFlag + "</td>");
                     tr.append(td);
                     td = $("<td><button class='updateButton' onclick='updateType(this)'></button></td>");
                     tr.append(td);
@@ -301,15 +328,25 @@
         div[0].className = "open";
         var select = div.find("select");
         var submit = div.find("button").eq(0);
+        submit.unbind('click');
         submit.on('click', function () {
             insertSubmit(this);
         });
-        div.find("input[name=name]")[0].value = '';
-        div.find("input[name=description]")[0].value = '';
+        div.find("input[name=company]")[0].value = '';
+        div.find("input[name=job]")[0].value ='';
+        div.find("input[name=recruitCount]")[0].value ='';
+        div.find("input[name=salary]")[0].value = '';
+        div.find("input[name=workPlace]")[0].value = '';
+        div.find("input[name=positionStatement]")[0].value = '';
+        div.find("input[name=jobRequirements]")[0].value = '';
+        div.find("input[name=hits]")[0].value = '';
+        div.find("input[name=hotFlag]")[0].value = '';
+        div.find("input[name=verifyFlag]")[0].value = '';
         //调用ajax查询外键
         $.ajax({
-            url: "/GetAllFathersType",
-            type: "post"
+            url: "/ShowManageType",
+            type: "get",
+            data: {"pagesize": 100, "pagenum": 1}
         })
             .done(function (t) {
                 for (type of t) {
@@ -327,25 +364,47 @@
         var div = $("#controlMeun");
         div[0].className = "open";
         var id = button.parentNode.parentNode.id;
-        var name = button.parentNode.parentNode.childNodes[0].innerText;
-        var description = button.parentNode.parentNode.childNodes[1].innerText;
+        var company = button.parentNode.parentNode.childNodes[0].innerText;
+        var job = button.parentNode.parentNode.childNodes[1].innerText;
+        var recruitCount = button.parentNode.parentNode.childNodes[3].innerText;
+        var salary = button.parentNode.parentNode.childNodes[4].innerText;
+        var workPlace = button.parentNode.parentNode.childNodes[5].innerText;
+        var positionStatement = button.parentNode.parentNode.childNodes[6].innerText;
+        var jobRequirements = button.parentNode.parentNode.childNodes[7].innerText;
+        var hits = button.parentNode.parentNode.childNodes[8].innerText;
+        var hotFlag = button.parentNode.parentNode.childNodes[9].innerText;
+        var verifyFlag = button.parentNode.parentNode.childNodes[10].innerText;
+        var typeId = button.parentNode.parentNode.childNodes[2].id;
         div.find("form")[0].id = id;
-        div.find("input[name=name]")[0].value = name;
-        div.find("input[name=description]")[0].value = description;
+        div.find("input[name=company]")[0].value = company;
+        div.find("input[name=job]")[0].value = job;
+        div.find("input[name=recruitCount]")[0].value = recruitCount;
+        div.find("input[name=salary]")[0].value = salary;
+        div.find("input[name=workPlace]")[0].value = workPlace;
+        div.find("input[name=positionStatement]")[0].value = positionStatement;
+        div.find("input[name=jobRequirements]")[0].value = jobRequirements;
+        div.find("input[name=hits]")[0].value = hits;
+        div.find("input[name=hotFlag]")[0].value = hotFlag;
+        div.find("input[name=verifyFlag]")[0].value = verifyFlag;
         var select = div.find("select");
         var submit = div.find("button").eq(0);
+        submit.unbind('click');
         submit.on('click', function () {
             updateSubmit(this);
         });
         //调用ajax查询外键
         $.ajax({
-            url: "/GetAllFathersType",
-            type: "post"
+            url: "/ShowManageType",
+            type: "get",
+            data: {"pagesize": 100, "pagenum": 1}
         })
             .done(function (t) {
                 select.html('');
                 for (type of t) {
                     var option = $("<option value='" + type.id + "'>" + type.name + "</option>");
+                    if (typeId === type.id) {
+                        $("<option value='" + type.id + "' selected='selected'>" + type.name + "</option>");
+                    }
                     select.append(option);
                 }
                 var option = $("<option value='" + id + "'>" + name + "</option>");
@@ -359,18 +418,32 @@
 
     function insertSubmit(btn) {
         console.log(btn);
-        var id = btn.parentNode.id;
-        var name = btn.parentNode.childNodes[1].value;
-        var description = btn.parentNode.childNodes[5].value;
-        var supId = btn.parentNode.childNodes[9].value;
+        var company = btn.parentNode.childNodes[1].value;
+        var job = btn.parentNode.childNodes[5].value;
+        var typeId = btn.parentNode.childNodes[9].value;
+        var recruitCount = btn.parentNode.childNodes[13].value;
+        var salary = btn.parentNode.childNodes[17].value;
+        var workPlace = btn.parentNode.childNodes[21].value;
+        var positionStatement = btn.parentNode.childNodes[25].value;
+        var jobRequirements = btn.parentNode.childNodes[29].value;
+        var hits = btn.parentNode.childNodes[33].value;
+        var hotFlag = btn.parentNode.childNodes[37].value;
+        var verifyFlag = btn.parentNode.childNodes[41].value;
         $.ajax({
-            url: "/AddType",
+            url: "/AddRecruit",
             type: "get",
             data: {
-                "id": id,
-                "name": name,
-                "description": description,
-                "supId": supId
+                "company": company,
+                "job": job,
+	            "typeId":typeId,
+                "recruitCount": recruitCount,
+                "salary": salary,
+                "workPlace": workPlace,
+                "positionStatement": positionStatement,
+                "jobRequirements": jobRequirements,
+                "hits": hits,
+                "hotFlag": hotFlag,
+                "verifyFlag": verifyFlag
             }
         })
             .done(function (t) {
@@ -389,18 +462,34 @@
 
     function updateSubmit(btn) {
         console.log(btn);
-        var id = btn.parentNode.id;
-        var name = btn.parentNode.childNodes[1].value;
-        var description = btn.parentNode.childNodes[5].value;
-        var supId = btn.parentNode.childNodes[9].value;
+        var recruitId = btn.parentNode.id;
+        var company = btn.parentNode.childNodes[1].value;
+        var job = btn.parentNode.childNodes[5].value;
+        var typeId = btn.parentNode.childNodes[9].value;
+        var recruitCount = btn.parentNode.childNodes[13].value;
+        var salary = btn.parentNode.childNodes[17].value;
+        var workPlace = btn.parentNode.childNodes[21].value;
+        var positionStatement = btn.parentNode.childNodes[25].value;
+        var jobRequirements = btn.parentNode.childNodes[29].value;
+        var hits = btn.parentNode.childNodes[33].value;
+        var hotFlag = btn.parentNode.childNodes[37].value;
+        var verifyFlag = btn.parentNode.childNodes[41].value;
         $.ajax({
-            url: "/UpdateType",
+            url: "/UpdateRecruit",
             type: "get",
             data: {
-                "id": id,
-                "name": name,
-                "description": description,
-                "supId": supId
+                "recruitId":recruitId,
+                "company": company,
+                "job": job,
+                "typeId":typeId,
+                "recruitCount": recruitCount,
+                "salary": salary,
+                "workPlace": workPlace,
+                "positionStatement": positionStatement,
+                "jobRequirements": jobRequirements,
+                "hits": hits,
+                "hotFlag": hotFlag,
+                "verifyFlag": verifyFlag
             }
         })
             .done(function (t) {
@@ -425,9 +514,9 @@
         str += button.parentNode.parentNode.childNodes[2].innerText + "  ";
         if (confirm("确定要删除如下值么\n" + str)) {
             $.ajax({
-                url: "/DeleteType",
+                url: "/DeleteRecruit",
                 type: "get",
-                data: {"id":id}
+                data: {"id": id}
             }).done(function (t) {
                 if (t === "true") {
                     alert("修改成功！");

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "GetTotalRecruitTypePageServlet", urlPatterns = {"/GetTotalRecruitTypePage"})
-public class GetTotalRecruitPageServlet extends HttpServlet {
+public class GetTotalRecruitTypePageServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		SuperInfo si = ServiceFactory.getRecruitTypeService().getTotalRecruitTypePage(5, request.getSession());

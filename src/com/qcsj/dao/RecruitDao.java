@@ -1,9 +1,7 @@
 package com.qcsj.dao;
 
 import com.qcsj.entity.Recruit;
-import com.qcsj.service.ServiceUtil.SuperInfo;
 
-import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -40,7 +38,7 @@ public interface RecruitDao {
 
 	Integer getRecruitPageNum(Integer pageSize) throws SQLException;
 
-	Integer updateRecruit(String company, String job, Integer typeId, Integer recruitCount, String salary, String workPlace, String positionStatement, String jobRequirements, Integer uid, Integer recruitId) throws SQLException;
+	Integer updateRecruit(String company, String job, Integer typeId, Integer recruitCount, String salary, String workPlace, String positionStatement, String jobRequirements, Integer hitss, Integer hotflag, Integer verifyflag, Integer uid, Integer recruitId) throws SQLException;
 
 	Integer deleteRecruit(Integer recruitId, Integer userId) throws SQLException;
 

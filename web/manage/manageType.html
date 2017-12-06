@@ -301,6 +301,7 @@
         div[0].className = "open";
         var select = div.find("select");
         var submit = div.find("button").eq(0);
+        submit.unbind('click');
         submit.on('click', function () {
             insertSubmit(this);
         });
@@ -334,6 +335,8 @@
         div.find("input[name=description]")[0].value = description;
         var select = div.find("select");
         var submit = div.find("button").eq(0);
+        //解除绑定事件
+        submit.unbind('click');
         submit.on('click', function () {
             updateSubmit(this);
         });

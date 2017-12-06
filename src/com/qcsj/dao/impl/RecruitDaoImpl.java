@@ -32,18 +32,22 @@ public class RecruitDaoImpl implements RecruitDao {
 				"  q.type_id type_id,\n" +
 				"  q.type_name type_name,\n" +
 				"  recruit_count,\n" +
+				"  salary,\n" +
+				"  work_place,\n" +
+				"  position_statement,\n" +
+				"  job_requirements,\n" +
 				"  hits,\n" +
 				"  hot_flag,\n" +
-				"  verify_flag\n" +
+				"  verify_flag \n" +
 				"FROM qcr_recruit\n" +
 				"  JOIN qcr_recruit_type q\n" +
 				"    ON qcr_recruit.type_id = q.type_id\n" +
-				"WHERE q.delete_flag = 0 AND qcr_recruit.delete_flag = 0" +
+				" WHERE q.delete_flag = 0 AND qcr_recruit.delete_flag = 0" +
 				(recruitId ? " AND `recruit_id` = ?" : "") +
 				(typeId ? " AND `type_id` = ?" : "") +
 				(company ? " AND `company` like ?" : "") +
 				(job ? " AND `job` LIKE ?" : "") +
-				" ORDER BY `recruit_id` , `update_date` DESC LIMIT ?, ?";
+				" ORDER BY `recruit_id` LIMIT ?, ?";
 	}
 
 	@Override
@@ -113,12 +117,12 @@ public class RecruitDaoImpl implements RecruitDao {
 	}
 
 	@Override
-	public Integer updateRecruit(String company, String job, Integer typeId, Integer recruitCount, String salary, String workPlace, String positionStatement, String jobRequirements, Integer uid,Integer recruitId) throws SQLException {
+	public Integer updateRecruit(String company, String job, Integer typeId, Integer recruitCount, String salary, String workPlace, String positionStatement, String jobRequirements, Integer hitss, Integer hotflag, Integer verifyflag, Integer uid, Integer recruitId) throws SQLException {
 		//language=MySQL
 		String sql = "UPDATE qcr_recruit\n" +
-				"SET company   = ?, JOB = ?, type_id = ?, recruit_count = ?, salary = ?,\n" +
-				"  work_place  = ?, position_statement = ?, job_requirements = ?,\n" +
-				"  update_user = ?, update_date = now()\n" +
+				"SET company  = ?, JOB = ?, type_id = ?, recruit_count = ?, salary = ?,\n" +
+				"  work_place = ?, position_statement = ?, job_requirements = ?, hits = ?,\n" +
+				"  hot_flag   = ?, verify_flag = ?, update_user = ?, update_date = now()\n" +
 				"WHERE recruit_id = ?";
 		ArrayList<Object> p = new ArrayList<>();
 		p.add(company);
@@ -129,6 +133,9 @@ public class RecruitDaoImpl implements RecruitDao {
 		p.add(workPlace);
 		p.add(positionStatement);
 		p.add(jobRequirements);
+		p.add(hitss);
+		p.add(hotflag);
+		p.add(verifyflag);
 		p.add(uid);
 		p.add(recruitId);
 		Object o = MySqlJDBC.execute(sql, p, 1);
@@ -168,6 +175,12 @@ public class RecruitDaoImpl implements RecruitDao {
 			rt.setTypeName(rs.getString(5));
 			rt.setRecruitCount(rs.getInt(6));
 			rt.setSalary(rs.getString(7));
+			rt.setWorkPlace(rs.getString(8));
+			rt.setPositionStatement(rs.getString(9));
+			rt.setJobRequirements(rs.getString(10));
+			rt.setHits(rs.getInt(11));
+			rt.setHotFlag(rs.getInt(12));
+			rt.setVerifyFlag(rs.getInt(13));
 			list.add(rt);
 		}
 		int len = list.size();

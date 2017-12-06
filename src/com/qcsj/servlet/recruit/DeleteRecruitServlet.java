@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * @author Ice_Dog
  */
-@WebServlet(name = "DeleteTypeServlet", urlPatterns = {"/DeleteType"})
+@WebServlet(name = "DeleteRecruitServlet", urlPatterns = {"/DeleteRecruit"})
 public class DeleteRecruitServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -27,7 +27,7 @@ public class DeleteRecruitServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		String id = request.getParameter("id");
 		SuperInfo si = ServiceFactory.getRecruitService().deleteRecruit(id,request.getSession());
-		System.out.println("deleteTypeServlet----" + si.getRet());
+		System.out.println("DeleteRecruitServlet----" + si.getRet());
 		switch (si.getRet()) {
 			case 0:
 				response.getWriter().print(true);

@@ -16,5 +16,5 @@ public interface RecruitService {
 
 	SuperInfo queryRecruit(String pageSize, String pageNum, HttpSession session);
 
-	SuperInfo updateRecruitById(String company, String job, String typeId, String recruitCount, String salary, String workPlace, String positionStatement, String jobRequirements, HttpSession session, String recruitId);
+	SuperInfo updateRecruitById(String company, String job, String typeId, String recruitCount, String salary, String workPlace, String positionStatement, String jobRequirements, String hits, String hotFlag, String verifyFlag, HttpSession session, String recruitId);
 }

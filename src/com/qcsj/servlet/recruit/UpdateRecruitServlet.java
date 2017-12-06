@@ -30,7 +30,10 @@ public class UpdateRecruitServlet extends HttpServlet {
 		String workPlace = request.getParameter("workPlace");
 		String positionStatement = request.getParameter("positionStatement");
 		String jobRequirements = request.getParameter("jobRequirements");
-		SuperInfo si = ServiceFactory.getRecruitService().updateRecruitById(company, job,typeId, recruitCount, salary, workPlace, positionStatement, jobRequirements, request.getSession(),recruitId);
+		String hits = request.getParameter("hits");
+		String hotFlag = request.getParameter("hotFlag");
+		String verifyFlag = request.getParameter("verifyFlag");
+		SuperInfo si = ServiceFactory.getRecruitService().updateRecruitById(company, job, typeId, recruitCount, salary, workPlace, positionStatement, jobRequirements, hits,hotFlag,verifyFlag,request.getSession(), recruitId);
 		System.out.println("UpdateTypeServlet----" + si.getRet());
 		switch (si.getRet()) {
 			case 0:
