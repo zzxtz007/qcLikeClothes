@@ -42,4 +42,9 @@ public interface RecruitDao {
 
 	Integer deleteRecruit(Integer recruitId, Integer userId) throws SQLException;
 
+	List<Recruit> getRecruitByTypeId(int size, int num, Integer id) throws SQLException;
+
+	List<Recruit> queryAllRecruitByHotFlag(int size, int num) throws SQLException;
+
+	List<Recruit> queryRecruitById(int id) throws SQLException;
 }

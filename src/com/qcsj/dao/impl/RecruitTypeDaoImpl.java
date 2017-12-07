@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Ice_dog
+ */
 public class RecruitTypeDaoImpl implements RecruitTypeDao {
 
 	/**
@@ -77,7 +80,7 @@ public class RecruitTypeDaoImpl implements RecruitTypeDao {
 		if (a == null) {
 			return null;
 		}
-		System.out.println("a----"+a);
+		System.out.println("a----" + a);
 		return a % pageSize == 0 ? a / pageSize : a / pageSize + 1;
 	}
 
@@ -120,7 +123,7 @@ public class RecruitTypeDaoImpl implements RecruitTypeDao {
 
 
 	@Override
-	public Integer deleteRecruitType(Integer typeId, Integer userId) throws SQLException{
+	public Integer deleteRecruitType(Integer typeId, Integer userId) throws SQLException {
 		String sql = "UPDATE qcr_recruit_type\n" +
 				"SET delete_flag =1,update_user = ? ,update_date = now() \n" +
 				"WHERE type_id = ?";
@@ -133,6 +136,29 @@ public class RecruitTypeDaoImpl implements RecruitTypeDao {
 			return null;
 		}
 		return o.hashCode();
+	}
+
+	@Override
+	public List<RecruitType> getAllSonByFatherId(Integer supId) throws SQLException {
+		//language=MySQL
+		String sql = "SELECT\n" +
+				"  q.type_id,\n" +
+				"  q.type_name,\n" +
+				"  q.type_description,\n" +
+				"  q.sub_id,\n" +
+				"  q.type_name supname\n" +
+				"FROM qcr_recruit_type q JOIN qcr_recruit_type  ON q.sub_id = qcr_recruit_type.type_id\n" +
+				"WHERE q.type_id !=qcr_recruit_type.sub_id  AND q.delete_flag =0  AND q.sub_id = ?";
+		ArrayList<Object> p = new ArrayList<>();
+		p.add(supId);
+		Object o = MySqlJDBC.execute(sql, p, MySqlJDBC.SELECT);
+		if (o == null) {
+			return null;
+		}
+		ResultSet rs = (ResultSet) o;
+		List<RecruitType> a = generateModelArr(rs);
+		MySqlJDBC.clossConnection();
+		return a;
 	}
 
 	@Override

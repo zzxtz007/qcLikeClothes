@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>前程招聘</title>
+
+	<script src="js/jquery3.1.js"></script>
+	<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="bootstrap/bootstrap.min.js"></script>
+	<!--自己写的初始化js-->
+	<script src="js/index_init.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+	<style>
+		.group-item111:hover {
+			transition: all 300ms ease;
+			background-color: rgba(116, 153, 188, 0.5);
+			color: white;
+		}
+	</style>
+</head>
+<body>
+<!-- header (navigator)-->
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header q-header">
+			<button type="button" class="navbar-toggle collapsed"
+			        data-toggle="modal" data-target="#searchModal"
+			        aria-expanded="false"
+			        style="border: 0;background-color: #54c9c3;">
+				<span class="sr-only">筛选职位</span>
+				<span class="icon-bar" style="background-color: #fff;"></span>
+				<span class="icon-bar" style="background-color: #fff;"></span>
+				<span class="icon-bar" style="background-color: #fff;"></span>
+			</button>
+			<a class="navbar-brand" style="color: #fff;" href="#">前程似锦</a>
+		</div>
+	</div><!-- /.container-fluid -->
+</nav>
+<!--弹出层-->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content" style="border-radius: 0;">
+			<div class="modal-body"
+			     style="max-height: 300px; overflow-y: scroll;">
+				<ul class="list-group line-group-grey"
+				    style="margin-bottom: 0;">
+					<script>
+                        $(function () {
+                            initModelFade();
+                            initTable();
+                            init();
+                        })
+					</script>
+				</ul>
+				<script type="text/javascript">
+					function init() {
+                        $(".collapse").each(function () {
+                            $(this).on('hidden.bs.collapse', function () {
+                                $switchImage = $(this).prev("span").find("img");
+                                $switchImage.attr("src", "images/down.png");
+                            });
+                            $(this).on('shown.bs.collapse', function () {
+                                $switchImage = $(this).prev("span").find("img");
+                                $switchImage.attr("src", "images/up.png");
+                            });
+                        });
+                    }
+
+				</script>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary"
+				        style="background-color: #54c9c3; border: 1px solid #54c9c3; border-radius: 0;"
+				        onclick="search()">
+					确定
+				</button>
+				<button type="button" class="btn btn-default"
+				        data-dismiss="modal"
+				        style="border: 1px solid #54c9c3; border-radius: 0;">取消
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--banner-->
+<div>
+	<img src="images/banner.png" style="width: 100%;"/>
+</div>
+
+<script>
+
+</script>
+<!-- menu -->
+<!-- 
+<ul class="nav nav-tabs">
+  	<li role="presentation" class="active"><a href="#" style="font-size: 16px;">热门职位</a></li>
+	<li role="presentation"><a href="#" style="color: #54c9c3;font-size: 16px;">更多职位</a></li>
+</ul>
+
+<div class="row menu">
+  <div class="col-xs-6"><a href="#" style="color: #666666;">热门职位</a></div>
+  <div class="col-xs-6" style="background-color: #e9f2f2;"><a href="#" style="color: #54c9c3;">更多职位</a></div>
+</div>
+-->
+<ul class="nav nav-tabs menu" role="tablist">
+	<li role="presentation" class="active"><a href="#home" aria-controls="home"
+	                                          role="tab"
+	                                          data-toggle="tab">热门职位</a></li>
+	<li role="presentation"><a href="#profile" aria-controls="profile"
+	                           role="tab" data-toggle="tab">更多职位</a></li>
+</ul>
+
+<div class="tab-content">
+	<!--tab1-->
+	<div role="tabpanel" class="tab-pane active" id="home">
+		<!-- list1 -->
+		<div style="padding:10px 7px; background-color: #e9f2f2;">
+		</div>
+	</div>
+	<script>
+
+        function updateTable1(url) {
+            $.ajax({
+                url: "/QueryAllRecruitByHotFlag",
+                type: "get",
+                data: {
+                    "pagesize": 100,
+                    "pagenum": 1
+                }
+            }).done(function (json) {
+                var box = $(url);
+                changeLable("body > nav > div > div > i", json[0].typeName);
+                for (var index = 0; index < json.length; index++) {
+                    var recruit = json[index];
+                    var img = '';
+                    if (recruit['verifyFlag'] === 1) {
+                        img = '<img src="../images/check-a.png"/>';
+                    }
+                    var smallBox = $('<div class="panel panel-default">\n<div class="panel-body">\n' +
+                        '<span class="signature">' + img + '</span>\n' +
+                        '<p class="title">' + recruit['job'] + '<span>' + recruit['salary'] + '</span></p>\n' +
+                        '<p>公司：' + recruit['company'] + '</p>\n' +
+                        '<p style="margin-bottom: 0;">\n' +
+                        '<span class="icon-addr"></span>工作地点：' + recruit['workPlace'] + '&nbsp;&nbsp;\n' +
+                        '<span class="icon-exp"></span>&nbsp;' + recruit['jobRequirements'] + '&nbsp;&nbsp;\n' +
+                        '</p>\n </div>\n <div class="panel-footer" style="background-color: #FFF;">' +
+                        '<span class="icon-tel"></span>&nbsp;13838381111\n </div>\n </div>');
+	                (function (id) {
+                        smallBox.on('click',function () {
+	                        location.href="detail.html?id="+id;
+                        });
+                    })(recruit.id);
+
+                    box.prepend(smallBox);
+                }
+
+            }).fail(function () {
+                alert("发生了未知错误，请稍后再试！");
+            });
+        }
+
+        function updateTable2(url) {
+			updateTable1(url)
+        }
+
+        function initTable() {
+            updateTable1("#home > div");
+            updateTable2("#profile > div");
+        }
+
+	</script>
+
+	<!--tab2-->
+	<div role="tabpanel" class="tab-pane" id="profile">
+		<!-- list2 -->
+		<div style="padding:10px 7px; background-color: #e9f2f2;">
+		</div>
+
+	</div>
+
+	<!--copyright-->
+	<div class="copyright">
+		智鑫无敌科技 0411-88888888<br>zzxtz007&copy;gmail &copy; all rights reserved.
+	</div>
+</div>
+</body>
+</html>

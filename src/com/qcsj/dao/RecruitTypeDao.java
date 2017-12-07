@@ -19,4 +19,5 @@ public interface RecruitTypeDao {
 	Integer deleteRecruitType(Integer typeId, Integer userId) throws SQLException;
 
 
+	List<RecruitType> getAllSonByFatherId(Integer supId) throws SQLException;
 }

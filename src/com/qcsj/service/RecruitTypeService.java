@@ -17,4 +17,6 @@ public interface RecruitTypeService {
 	SuperInfo insertType(String id, String name, String description, String supId, HttpSession session);
 
 	SuperInfo deleteType(String id, HttpSession session);
+
+	SuperInfo getAllSonByFatherId(String id, HttpSession session);
 }

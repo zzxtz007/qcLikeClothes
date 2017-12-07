@@ -17,14 +17,17 @@ public class RecruitDaoImpl implements RecruitDao {
 	 * <p>
 	 * 全部为false则查询全部记录
 	 *
-	 * @param recruitId 职位分类ID
-	 * @param company   公司名称
-	 * @param job       职位名称
-	 * @param typeId    类型id
+	 * @param recruitId   职位分类ID
+	 * @param company     公司名称
+	 * @param job         职位名称
+	 * @param typeId      类型id
+	 * @param hits        点击数
+	 * @param hot_flag    是否热门
+	 * @param verify_flag 是否验证
 	 * @return 拼接后的查询语句
 	 */
-	private String combineQuerySql(boolean recruitId, boolean company, boolean job, boolean typeId
-	) {
+	private String combineQuerySql(boolean recruitId, boolean company, boolean job, boolean typeId, boolean hits, boolean hot_flag
+			, boolean verify_flag) {
 		return "SELECT\n" +
 				"  recruit_id,\n" +
 				"  company,\n" +
@@ -44,15 +47,18 @@ public class RecruitDaoImpl implements RecruitDao {
 				"    ON qcr_recruit.type_id = q.type_id\n" +
 				" WHERE q.delete_flag = 0 AND qcr_recruit.delete_flag = 0" +
 				(recruitId ? " AND `recruit_id` = ?" : "") +
-				(typeId ? " AND `type_id` = ?" : "") +
+				(typeId ? " AND q.`type_id` = ?" : "") +
 				(company ? " AND `company` like ?" : "") +
+				(hits ? " AND `hits` LIKE ?" : "") +
+				(hot_flag ? " AND `hot_flag` = 1" : "") +
+				(verify_flag ? " AND `verify_flag` = 1" : "") +
 				(job ? " AND `job` LIKE ?" : "") +
 				" ORDER BY `recruit_id` LIMIT ?, ?";
 	}
 
 	@Override
 	public List<Recruit> getRecruitByPage(Integer pageSize, Integer pageNum) throws SQLException {
-		String sql = combineQuerySql(false, false, false, false);
+		String sql = combineQuerySql(false, false, false, false, false, false, false);
 		ArrayList<Object> p = new ArrayList<>();
 		p.add((pageNum - 1) * pageSize);
 		p.add(pageNum * pageSize);
@@ -161,6 +167,56 @@ public class RecruitDaoImpl implements RecruitDao {
 			return null;
 		}
 		return o.hashCode();
+	}
+
+	@Override
+	public List<Recruit> getRecruitByTypeId(int size, int num, Integer id) throws SQLException {
+		String sql = combineQuerySql(false, false, false, true, false, false, false);
+		ArrayList<Object> p = new ArrayList<>();
+		p.add(id);
+		p.add((num - 1) * size);
+		p.add(num * size);
+		Object o = MySqlJDBC.execute(sql, p, MySqlJDBC.SELECT);
+		if (o == null) {
+			return null;
+		}
+		ResultSet rs = (ResultSet) o;
+		List<Recruit> a = generateModelArr(rs);
+		MySqlJDBC.clossConnection();
+		return a;
+	}
+
+	@Override
+	public List<Recruit> queryAllRecruitByHotFlag(int size, int num) throws SQLException {
+		String sql = combineQuerySql(false, false, false, false, false, true, false);
+		ArrayList<Object> p = new ArrayList<>();
+		p.add((num - 1) * size);
+		p.add(num * size);
+		Object o = MySqlJDBC.execute(sql, p, MySqlJDBC.SELECT);
+		if (o == null) {
+			return null;
+		}
+		ResultSet rs = (ResultSet) o;
+		List<Recruit> a = generateModelArr(rs);
+		MySqlJDBC.clossConnection();
+		return a;
+	}
+
+	@Override
+	public List<Recruit> queryRecruitById(int id) throws SQLException {
+		String sql = combineQuerySql(true, false, false, false, false, true, false);
+		ArrayList<Object> p = new ArrayList<>();
+		p.add(id);
+		p.add(0);
+		p.add(1);
+		Object o = MySqlJDBC.execute(sql, p, MySqlJDBC.SELECT);
+		if (o == null) {
+			return null;
+		}
+		ResultSet rs = (ResultSet) o;
+		List<Recruit> a = generateModelArr(rs);
+		MySqlJDBC.clossConnection();
+		return a;
 	}
 
 

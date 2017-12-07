@@ -79,11 +79,11 @@ public class RecruitTypeServiceImpl implements RecruitTypeService {
 	public SuperInfo getAllFathersType(HttpSession session) {
 		SuperInfo si = new SuperInfo();
 
-		// 未登录时返回 2
-		if (!ServiceUtil.isLoggedIn(session)) {
-			si.setRet(2);
-			return si;
-		}
+//		// 未登录时返回 2
+//		if (!ServiceUtil.isLoggedIn(session)) {
+//			si.setRet(2);
+//			return si;
+//		}
 		try {
 			List<RecruitType> list = DaoFactory.getRecruitTypeDao().getRecruitTypeFathers();
 
@@ -228,6 +228,43 @@ public class RecruitTypeServiceImpl implements RecruitTypeService {
 		} catch (SQLException e) {
 			//用户登录时发生异常 1
 			si.setRet(1);
+			return si;
+		}
+	}
+
+	@Override
+	public SuperInfo getAllSonByFatherId(String id, HttpSession session) {
+		SuperInfo si = new SuperInfo();
+		Integer supId = 0;
+//		// 未登录时返回 2
+//		if (!ServiceUtil.isLoggedIn(session)) {
+//			si.setRet(2);
+//			return si;
+//		}
+		
+		try {
+			supId = Integer.parseInt(id);
+		} catch (Exception e) {
+			// 类型转换异常 5
+			si.setRet(5);
+			return si;
+		}
+		try {
+			List<RecruitType> list = DaoFactory.getRecruitTypeDao().getAllSonByFatherId(supId);
+
+			if (list == null) {
+				// 查询到的返回值为空
+				si.setRet(4);
+				return si;
+			}
+			si.setLists(list);
+			// 查询所有type
+			si.setRet(0);
+			return si;
+		} catch (SQLException e) {
+			//用户查询时发生异常 1
+			si.setRet(1);
+			e.printStackTrace();
 			return si;
 		}
 	}

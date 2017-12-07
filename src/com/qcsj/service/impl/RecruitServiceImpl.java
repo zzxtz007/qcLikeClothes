@@ -155,10 +155,10 @@ public class RecruitServiceImpl implements RecruitService {
 		}
 
 		// 未登录时返回 2
-		if (!ServiceUtil.isLoggedIn(session)) {
-			si.setRet(2);
-			return si;
-		}
+//		if (!ServiceUtil.isLoggedIn(session)) {
+//			si.setRet(2);
+//			return si;
+//		}
 		try {
 			List<Recruit> list = DaoFactory.getRecruitDao().getRecruitByPage(size, num);
 
@@ -232,6 +232,130 @@ public class RecruitServiceImpl implements RecruitService {
 				return si;
 			}
 			si.setRet(3);
+			return si;
+		} catch (SQLException e) {
+			//用户登录时发生异常 1
+			si.setRet(1);
+			return si;
+		}
+	}
+
+	@Override
+	public SuperInfo queryRecruitByTypeId(String pageSize, String pageNum, String typeId, HttpSession session) {
+		SuperInfo si = new SuperInfo();
+		Integer id = 0;
+		int size = 0;
+		int num = 0;
+		if (pageSize == null || pageNum == null||typeId ==null) {
+			// 查询到的返回值为空 5
+			si.setRet(5);
+			return si;
+		}
+		// 类型转换异常 3
+		try {
+			size = Integer.parseInt(pageSize);
+			num = Integer.parseInt(pageNum);
+			id = Integer.parseInt(typeId);
+		} catch (Exception e) {
+			si.setRet(3);
+			return si;
+		}
+
+		// 未登录时返回 2
+//		if (!ServiceUtil.isLoggedIn(session)) {
+//			si.setRet(2);
+//			return si;
+//		}
+		try {
+			List<Recruit> list = DaoFactory.getRecruitDao().getRecruitByTypeId(size, num,id);
+
+			if (list == null) {
+				// 查询到的返回值为空
+				si.setRet(4);
+				return si;
+			}
+			si.setLists(list);
+			// 查询所有type
+			si.setRet(0);
+			return si;
+		} catch (SQLException e) {
+			//用户登录时发生异常 1
+			si.setRet(1);
+			return si;
+		}
+	}
+
+	@Override
+	public SuperInfo queryAllRecruitByHotFlag(String pageSize, String pageNum, HttpSession session) {
+		SuperInfo si = new SuperInfo();
+		int size = 0;
+		int num = 0;
+		if (pageSize == null || pageNum == null) {
+			// 查询到的返回值为空 5
+			si.setRet(5);
+			return si;
+		}
+		// 类型转换异常 3
+		try {
+			size = Integer.parseInt(pageSize);
+			num = Integer.parseInt(pageNum);
+		} catch (Exception e) {
+			si.setRet(3);
+			return si;
+		}
+
+		// 未登录时返回 2
+//		if (!ServiceUtil.isLoggedIn(session)) {
+//			si.setRet(2);
+//			return si;
+//		}
+		try {
+			List<Recruit> list = DaoFactory.getRecruitDao().queryAllRecruitByHotFlag(size, num);
+
+			if (list == null) {
+				// 查询到的返回值为空
+				si.setRet(4);
+				return si;
+			}
+			si.setLists(list);
+			// 查询所有type
+			si.setRet(0);
+			return si;
+		} catch (SQLException e) {
+			//用户登录时发生异常 1
+			si.setRet(1);
+			return si;
+		}
+	}
+
+	@Override
+	public SuperInfo queryRecruitById(String typeId, HttpSession session) {
+		SuperInfo si = new SuperInfo();
+		int id = 0;
+		// 类型转换异常 3
+		try {
+			id = Integer.parseInt(typeId);
+		} catch (Exception e) {
+			si.setRet(3);
+			return si;
+		}
+
+		// 未登录时返回 2
+//		if (!ServiceUtil.isLoggedIn(session)) {
+//			si.setRet(2);
+//			return si;
+//		}
+		try {
+			List<Recruit> list = DaoFactory.getRecruitDao().queryRecruitById(id);
+
+			if (list == null) {
+				// 查询到的返回值为空
+				si.setRet(4);
+				return si;
+			}
+			si.setLists(list);
+			// 查询所有type
+			si.setRet(0);
 			return si;
 		} catch (SQLException e) {
 			//用户登录时发生异常 1
